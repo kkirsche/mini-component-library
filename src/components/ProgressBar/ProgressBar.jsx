@@ -2,12 +2,6 @@
 import styled from "styled-components";
 import { COLORS } from "../../constants";
 
-/**
- * @typedef {object} ProgressBarProps
- * @property {"small" | "medium" | "large"} size - The progress bar size.
- * @property {number} size - The value (0–100, inclusive) of the progress bar.
- * @property {boolean} native - Use the native <progress> element.
- */
 
 const STYLES = {
   "small": {
@@ -75,6 +69,13 @@ const ProgressValue = styled.div`
     height: 100%;
     width: ${(props) => props.value}%;
 `;
+
+/**
+ * @typedef {object} ProgressBarProps
+ * @property {"small" | "medium" | "large"} size - The progress bar size.
+ * @property {number} size - The value (0–100, inclusive) of the progress bar.
+ * @property {boolean} native - Use the native <progress> element.
+ */
 
 /**
  * A progress bar.
