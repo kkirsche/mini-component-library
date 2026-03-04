@@ -12,63 +12,68 @@ import { COLORS } from "../../constants";
 const STYLES = {
   "small": {
     "--height": "8px",
-    "--outer-border-radius": "4px",
     "--inner-border-radius": "4px",
+    "--outer-border-radius": "4px",
     "--padding": "0",
   },
   "medium": {
     "--height": "12px",
-    "--outer-border-radius": "4px",
     "--inner-border-radius": "4px",
+    "--outer-border-radius": "4px",
     "--padding": "0",
   },
   "large": {
     "--height": "24px",
-    "--outer-border-radius": "8px",
     "--inner-border-radius": "4px",
+    "--outer-border-radius": "8px",
     "--padding": "4px",
   }
 }
 
-const Progress = styled.progress`
+const NativeProgress = styled.progress`
   appearance: none;
   height: var(--height);
+    width: 100%;
 
   &::-webkit-progress-bar {
     background: ${COLORS.transparentGray15};
+    border-radius: var(--outer-border-radius);
     box-shadow: inset 0px 2px 4px ${COLORS.transparentGray35};
     padding: var(--padding);
-    border-radius: var(--outer-border-radius);
   }
 
   &::-webkit-progress-value {
     background-color: ${COLORS.primary};
-    border-top-left-radius: var(--inner-border-radius);
     border-bottom-left-radius: var(--inner-border-radius);
-    border-top-right-radius: ${(props) => props.value >= 100 ? 'var(--inner-border-radius)' : props.value >= 99 ? 'calc(var(--inner-border-radius) / 2)' : 0};
     border-bottom-right-radius: ${(props) => props.value >= 100 ? 'var(--inner-border-radius)' : props.value >= 99 ? 'calc(var(--inner-border-radius) / 2)' : 0};
+    border-top-left-radius: var(--inner-border-radius);
+    border-top-right-radius: ${(props) => props.value >= 100 ? 'var(--inner-border-radius)' : props.value >= 99 ? 'calc(var(--inner-border-radius) / 2)' : 0};
   }
 `;
 
 const ProgressWrapper = styled.div`
-    height: var(--height);
     background: ${COLORS.transparentGray15};
-    box-shadow: inset 0px 2px 4px ${COLORS.transparentGray35};
-    padding: var(--padding);
     border-radius: var(--outer-border-radius);
+    box-shadow: inset 0px 2px 4px ${COLORS.transparentGray35};
+    height: var(--height);
     overflow: hidden;
+    padding: var(--padding);
+    width: 100%;
+    // match native progress
+    display: inline-block;
 `;
 
 const Trimmer = styled.div`
   border-radius: var(--inner-border-radius);
-  overflow: hidden;
   height: 100%;
+  // for trimming the border radius when the ProgressValue approaches 100%
+  overflow: hidden;
 `
 
 const ProgressValue = styled.div`
+    background-color: ${COLORS.primary};
     height: 100%;
     width: ${(props) => props.value}%;
-    background-color: ${COLORS.primary};
 `;
 
 /**
@@ -78,10 +83,9 @@ const ProgressValue = styled.div`
  */
 const ProgressBar = ({ value, size, native = false}) => {
   return native ? (
-    <label>
-    <Progress max="100" value={value} style={{...STYLES[size]}}>
+    <NativeProgress max="100" value={value} style={{...STYLES[size]}}>
       {value}%
-    </Progress></label>
+    </NativeProgress>
   ) : (
     <ProgressWrapper style={{...STYLES[size]}} role="progressbar" aria-label="Progress Bar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}>
       <Trimmer style={{...STYLES[size]}}>
