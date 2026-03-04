@@ -1,19 +1,113 @@
-import React from 'react';
-import styled from 'styled-components';
 
-import { COLORS } from '../../constants';
+import styled from "styled-components";
+import { COLORS } from "../../constants";
+import Icon from "../Icon";
+import VisuallyHidden from "../VisuallyHidden";
 
-import Icon from '../Icon';
-import VisuallyHidden from '../VisuallyHidden';
+const Wrapper = styled.div`
+  position: relative;
+  height: var(--height);
+  width: ${(props) => `${props.width}px`};
+  color: ${COLORS.gray700};
+  font-weight: 700;
 
-const IconInput = ({
-  label,
-  icon,
-  width = 250,
-  size,
-  placeholder,
-}) => {
-  return 'TODO';
+`;
+
+const IconWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--icon-size);
+  width: var(--icon-size);
+  margin: auto;
+`;
+
+const Input = styled.input`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  appearance: none;
+  padding: var(--padding-y) 0;
+  padding-left: var(--padding-left);
+  border: none;
+  border-bottom: var(--border-size) solid black;
+  font-size: var(--font-size);
+  font-family: "Roboto", sans-serif;
+
+  &::placeholder {
+    font-weight: 400;
+    color: ${COLORS.gray500};
+  }
+
+  &:not(:placeholder-shown) {
+    font-weight: 700;
+    color: ${COLORS.gray700};
+  }
+
+  &:hover {
+    color: black;
+  }
+
+  &:focus {
+    outline-offset: 2px;
+  }
+`
+
+const SIZES = {
+  "small": {
+    "--height": "24px",
+    "--padding-left": "24px",
+    "--padding-y": "4px",
+    "--icon-size": "16px",
+    "--font-size": "0.875rem",
+    "--border-size": "1px",
+  },
+  "large": {
+    "--height": "36px",
+    "--padding-left": "36px",
+    "--padding-y": "8px",
+    "--icon-size": "24px",
+    "--font-size": "1rem",
+    "--border-size": "2px",
+  }
+}
+
+const IconInput = ({ label, icon, width = 250, size, placeholder }) => {
+
+  let styles;
+  let iconProps
+  switch (size) {
+    case "large":
+      styles = SIZES[size]
+      iconProps = {size: 24, strokeWidth: 2}
+      break;
+    case "small":
+      styles = SIZES[size]
+      iconProps = {size: 16, strokeWidth: 1}
+      break;
+    default:
+      throw new Error(`Unsupported IconInput size: ${size}`)
+  }
+
+  if (styles === undefined || iconProps === undefined) {
+    throw new Error("Unexpected undefined value")
+  }
+
+  return (
+    <Wrapper width={width} style={{...styles}}>
+      <Input type="text" placeholder={placeholder} id="icon-input" />
+      <IconWrapper>
+      <Icon id={icon} {...iconProps} /></IconWrapper>
+      <VisuallyHidden>
+        <label for="icon-input">{label}</label>
+      </VisuallyHidden>
+    </Wrapper>
+  );
 };
 
 export default IconInput;
