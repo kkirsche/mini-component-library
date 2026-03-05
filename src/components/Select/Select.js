@@ -51,6 +51,8 @@ const PresentedSelect = styled.div`
 `;
 
 const IconWrapper = styled.div`
+  // take it out of flow so that we don't bloat the box more than necessary
+  // this gets "pixel perfect"
   position: absolute;
   top: 0;
   bottom: 0;
